@@ -1,0 +1,65 @@
+﻿var dataTable;
+
+$(document).ready(function () {
+    carregarDataTable();
+});
+
+function carregarDataTable() {
+    dataTable = $('#tblData').DataTable({
+        "ajax": {
+            "url": "/livros/getall/",
+            "type": "GET",
+            "datatype": "json"
+        },
+        "columns": [
+            { "data": "nome", "width": "20%" },
+            { "data": "tipo", "width": "20%" },
+            { "data": "classificacao", "width": "20%" },
+            {
+                "data": "id",
+                "render": function (data) {
+                    return `<div class="text-center">
+                        <a href="/livros/Upsert?id=${data}" class='btn btn-success text-white' style='cursor:pointer; width:70px;'>
+                            Editar
+                        </a>
+                        &nbsp;
+                        <a class='btn btn-danger text-white' style='cursor:pointer; width:70px;'
+                            onclick=Delete('/livros/Delete?id='+${data})>
+                            Excluir
+                        </a>
+                        </div>`;
+                }, "width": "40%"
+            }
+        ],
+        "language": {
+            "emptyTable": "não existe livro"
+        },
+        "width": "100%"
+    });
+}
+
+function Delete(url) {
+    swal({
+        title: "Deseja excluir o registro?",
+        text: "Depois de excluído, você não será capaz de recuperar",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true
+    }).then((willDelete) => {
+        if (willDelete) {
+            $.ajax({
+                type: "DELETE",
+                url: url,
+                success: function (data) {
+                    if (data.success) {
+                        toastr.success(data.message);
+                        dataTable.ajax.reload();
+                    }
+                    else {
+                        toastr.error(data.message);
+                    }
+                }
+            });
+        }
+    });
+}

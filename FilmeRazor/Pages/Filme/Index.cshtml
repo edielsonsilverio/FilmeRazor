@@ -1,0 +1,97 @@
+﻿@page
+@model FilmeRazor.Pages.Filme.IndexModel
+<br />
+<div class="container border row pt-2 mt-2">
+    <div class="col-9">
+        <h2 class="text-primary">Lista de Filmes</h2>
+    </div>
+    <div class="col-3">
+        <a asp-page="InserirAtualizar" class="btn btn-primary form-control text-white">Criar Novo Filme</a>
+    </div>
+
+
+    <div class="col-12 border pt-2 mt-2">
+        <form method="post">
+            @if (Model.Filmes.Count() > 0)
+            {
+                <table class="table table-striped border">
+                    <tr class="table-secondary">
+                        <th>
+                            <label asp-for="Filmes.FirstOrDefault().Id"></label>
+                        </th>
+                        <th>
+                            <label asp-for="Filmes.FirstOrDefault().Titulo"></label>
+                        </th>
+                        <th>
+                            <label asp-for="Filmes.FirstOrDefault().DataLancamento"></label>
+                        </th>
+                        <th>
+                            <label asp-for="Filmes.FirstOrDefault().Genero"></label>
+                        </th>
+                        <th>
+                            <label asp-for="Filmes.FirstOrDefault().Preco"></label>
+                        </th>
+                        <th>
+
+                        </th>
+                    </tr>
+                    @foreach (var item in Model.Filmes)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(m => item.Id)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(m => item.Titulo)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(m => item.DataLancamento)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(m => item.Genero)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(m => item.Preco)
+                            </td>
+                            <td>
+                                <a asp-page="InserirAtualizar" asp-route-id="@item.Id" class="btn btn-primary btn-sm text-white">Editar</a>
+                                <button asp-page-handler="Delete" asp-route-id="@item.Id" onclick="return confirm('Deseja excluir o registro?')" class="btn btn-danger btn-sm">Excluir</button>
+                            </td>
+                        </tr>
+                    }
+                </table>
+            }
+            else
+            {
+                <p>Não tem Filme disponível.</p>
+            }
+        </form>
+    </div>
+
+
+    <div class="col-12" style="text-align:center">
+        <br />
+        <span class="h3 text-primary">OU</span>
+        <br /><br />
+    </div>
+    <div class="col-12 border p-2 mb-2">
+        <table id="tblData" class="table table-primary table-bordered" style="width:100%">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Título</th>
+                    <th>Data de Lançamento</th>
+                    <th>Genero</th>
+                    <th>Preço</th>
+                    <th></th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+@section Scripts{ 
+    <script src="~/js/filme.js"></script>
+}
+
+
+
